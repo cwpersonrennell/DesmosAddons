@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+//document.addEventListener("DOMContentLoaded", () => {
   let counter =0;
 Desmos.Addons = {};
 
@@ -33,5 +33,5 @@ Desmos.Addons.draw.arc = function(x,y,r,t0, t1, ccw=true,color="blue"){
 }
 
 console.log(Desmos.Addons);
-});
+//});
 
