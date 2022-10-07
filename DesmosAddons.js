@@ -1,5 +1,5 @@
-let Desmos = {} || Desmos;
-let counter =0;
+document.addEventListener("DOMContentLoaded", () => {
+  let counter =0;
 Desmos.Addons = {};
 
 Desmos.Addons.Label = function(text,x,y,color="blue", labelOrientation=Desmos.LabelOrientations.ABOVE){
@@ -33,3 +33,5 @@ Desmos.Addons.draw.arc = function(x,y,r,t0, t1, ccw=true,color="blue"){
 }
 
 console.log(Desmos.Addons);
+});
+
