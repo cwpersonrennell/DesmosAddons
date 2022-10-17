@@ -8,7 +8,7 @@ let DEFAULT_OPTIONS = {expressions:false, lockViewport:true,fontSize:24};
 function getCalculators(){
     
     let els = document.getElementsByTagName("calculator");
-    
+    let calculators =[];
     els = Array.from(els);
     for(let i =0;i<els.length;i++){
       let el = els[i];
@@ -37,7 +37,8 @@ function getCalculators(){
       el.replaceWith(calc_el);
       let calculator = Desmos.GraphingCalculator(calc_el,calculator_options);
       calculator.setExpressions(expressions);
+      calculators.push(calculator);
     }
-    
+    return calculators;
 }
  
