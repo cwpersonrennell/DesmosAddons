@@ -27,13 +27,22 @@ function getCalculators(){
       let expressions =[];
       for(line of lines){
     
-        let latex = line.split(";")[0];
+        let latex = line.split(";")[0];        
         let options = {};
         eval(`Object.assign(options,${line.split(";")[1]})`);
-        
-        let expression ={latex:latex};
-        Object.assign(expression,options);
-        expressions.push(expression);
+        if(latex.replaceAll(/[\s\n]/g,"") != "table"){
+          let expression ={latex:latex};
+          Object.assign(expression,options);
+          expressions.push(expression);
+        }else{
+           let columns = [];
+          for(let k=1; k<line.split(";").length;k++){
+            let obj = {};
+            eval(`Object.assign(obj,${line.split(";")[k]})`);
+            columns.push(obj);
+          }
+          expressions.push({type:"table",columns:columns});
+        }
       }
       
       let calc_el = document.createElement("div");
@@ -47,4 +56,3 @@ function getCalculators(){
     }
     return calculators;
 }
- 
