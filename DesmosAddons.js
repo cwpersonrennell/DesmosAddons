@@ -1,37 +1,43 @@
-//document.addEventListener("DOMContentLoaded", () => {
-  let counter =0;
-Desmos.Addons = {};
-
-Desmos.Addons.Label = function(text,x,y,color="blue", labelOrientation=Desmos.LabelOrientations.ABOVE){
-    return [{
-        latex:String.raw`(${x},${y})`,
-        color:color,
-        showLabel:true,
-        label:text,
-        hidden:true,
-        secret:true,
-        labelOrientation:labelOrientation
-    }];
+let red = "red";
+let blue = "blue";
+let black = "black";
+let orange = "orange";
+let purple = "purple";
+let DEFAULT_OPTIONS = {expressions:false, lockViewport:true,fontSize:24};
+  
+function getCalculators(){
+    
+    let els = document.getElementsByTagName("calculator");
+    
+    els = Array.from(els);
+    for(let i =0;i<els.length;i++){
+      let el = els[i];
+      let calculator_options ={};
+      Object.assign(calculator_options,DEFAULT_OPTIONS);
+	  if("options" in el.attributes){
+        eval(`Object.assign(calculator_options,${el.attributes.options.value})`);
+      }
+      let content = el.innerHTML;
+      let lines = content.split("\\");
+      let expressions =[];
+      for(line of lines){
+    
+        let latex = line.split(";")[0];
+        let options = {};
+        eval(`Object.assign(options,${line.split(";")[1]})`);
+        
+        let expression ={latex:latex};
+        Object.assign(expression,options);
+        expressions.push(expression);
+      }
+      
+      let calc_el = document.createElement("div");
+      calc_el.style.width=el.style.width;
+      calc_el.style.height=el.style.height;
+      el.replaceWith(calc_el);
+      let calculator = Desmos.GraphingCalculator(calc_el,calculator_options);
+      calculator.setExpressions(expressions);
+    }
+    
 }
-
-Desmos.Addons.draw ={};
-
-Desmos.Addons.draw.arc = function(x,y,r,t0, t1, ccw=true,color="blue"){
-    counter++;
-    let s = ccw?"":"-";
-    return [
-        {latex:String.raw`r_{${counter}}=${r}`,hidden:true,secret:true},
-        {latex:String.raw`x_{${counter}}=${x}`,hidden:true,secret:true},
-        {latex:String.raw`y_{${counter}}=${y}`,hidden:true,secret:true},
-        {
-            latex:String.raw`(r_{${counter}\cos(${s}t)+x_{${counter}},r_{${counter}}\sin(${s}t)+y_{${counter}})`,
-            color:color,
-            secret:true,
-            parametricDomain:{min:`${t0}`,max:`${t1}`}
-        }
-    ];
-}
-
-console.log(Desmos.Addons);
-//});
-
+ 
