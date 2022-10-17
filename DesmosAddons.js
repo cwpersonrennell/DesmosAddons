@@ -18,7 +18,7 @@ function getCalculators(){
         eval(`Object.assign(calculator_options,${el.attributes.options.value})`);
       }
       let content = el.innerHTML;
-      let lines = content.split("\\");
+      let lines = content.split("\\ ");
       let expressions =[];
       for(line of lines){
     
