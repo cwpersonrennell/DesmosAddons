@@ -41,6 +41,7 @@ function getCalculators(){
       calc_el.style.height=el.style.height;
       el.replaceWith(calc_el);
       let calculator = Desmos.GraphingCalculator(calc_el,calculator_options);
+      calculator.setMathBounds(math_bounds);
       calculator.setExpressions(expressions);
       calculators.push(calculator);
     }
