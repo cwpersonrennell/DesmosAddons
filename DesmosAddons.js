@@ -13,9 +13,14 @@ function getCalculators(){
     for(let i =0;i<els.length;i++){
       let el = els[i];
       let calculator_options ={};
+      let math_bounds = {left:-10,bottom:-10,top:10,right:10};
       Object.assign(calculator_options,DEFAULT_OPTIONS);
-	  if("options" in el.attributes){
-        eval(`Object.assign(calculator_options,${el.attributes.options.value})`);
+	    
+      if("options" in el.attributes){
+           eval(`Object.assign(calculator_options,${el.attributes.options.value})`);
+      }
+      if("mathbounds" in el.attributes){
+	    eval(`Object.assign(math_bounds,${el.attributes.mathbounds.value})`);
       }
       let content = el.innerHTML;
       let lines = content.split("\\ ");
