@@ -16,13 +16,13 @@ function getCalculators(){
       calc_el.style.width=el.style.width;
       calc_el.style.height=el.style.height;
       el.replaceWith(calc_el);
-      if(el.getAttribute('data')!=undefined){
+      if(el.getAttribute('data-string')!=undefined){
 	      let options={};
 	    if("options" in el.attributes){
 	      options = JSON.parse(el.getAttribute("options"));
 	    }
 	    let calculator = Desmos.GraphingCalculator(calc_el,options);
-	    calculator.setState(JSON.parse(el.getAttribute('data')));    
+	    calculator.setState(JSON.parse(el.getAttribute('data-string')));    
 	    calculators.push(calculator);
 	      
 	    continue;
