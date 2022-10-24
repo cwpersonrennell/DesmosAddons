@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="description" content="Blank HTML file for you to create something.">
-    <script src="./copyToClipboard.js"></script>
-    <script src="./DesmosAddons.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="" src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    <script defer src="./copyToClipboard.js"></script>
+    <script defer src="./DesmosAddons.js"></script>
     <style>
       body { max-width: 800px; width: 100%; margin: 1em auto; font-size: 2em; }
     </style>
@@ -20,7 +23,7 @@
     
     let b = document.getElementById("copyButton")
     b.addEventListener("click",function(){
-      let el = document.getElementById("app");
+      let el = document.getElementById("desmos");
       copyToClipboard(el);
     });
   </script>
