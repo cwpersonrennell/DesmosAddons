@@ -21,8 +21,14 @@ function getCalculators(){
 	    if("options" in el.attributes){
 	      options = JSON.parse(el.getAttribute("options"));
 	    }
+
 	    let calculator = Desmos.GraphingCalculator(calc_el,options);
-	    calculator.setState(JSON.parse(el.getAttribute('data-string')));    
+	      
+	    calculator.setState(JSON.parse(el.getAttribute('data-string')));
+	      
+	    if("mathbounds" in el.attributes){
+	      calculator.setMathBounds(JSON.parse(el.getAttribute("mathbounds")));
+	    }
 	    calculators.push(calculator);
 	      
 	    continue;
