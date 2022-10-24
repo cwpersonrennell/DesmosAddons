@@ -12,18 +12,19 @@
     <script defer src="./copyToClipboard.js"></script>
     <script defer src="./DesmosAddons.js"></script>
     <style>
-      body { max-width: 800px; width: 100%; margin: 1em auto; font-size: 2em; }
+      body { max-width: 1000px; width: 100%; margin: 1em auto; font-size: 2em; }
     </style>
   </head>
   <body>
     <div id="app">Hello World.</div>
     <input id="copyButton" type="button" value="Copy" >
+    <div id="result"></div>
   </body>
   <script>
     
     let b = document.getElementById("copyButton")
     b.addEventListener("click",function(){
-      let el = document.getElementById("desmos");
+      let el = document.getElementById("result");
       copyToClipboard(el);
     });
   </script>
