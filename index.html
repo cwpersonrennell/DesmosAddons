@@ -71,6 +71,7 @@
 	}
 	  
 	function getCalculatorOptions(){
+        let current_state = calculator.getState();
 		let options = {};
 		let formEl = document.getElementById('calculator_options');
 		for(key in DesmosOptions){
@@ -81,30 +82,40 @@
 		for(key of NewDesmosOnly){
 			delete state[key];
 		}
-		calculator.setState(state);
+        for(key in state){
+          current_state[key] = state[key]
+        }
 		return [options,state];
 	}
 	  
-    function rebuildCalculator(options){
+    function rebuildCalculator(){
+        let options = getCalculatorOptions()[0];      
 		let el = document.getElementById('calculator');
 		let calcDim= document.getElementById('calculator_dimensions');
 		let newEl = document.createElement('div');
 		let state = calculator.getState();
+      
 		newEl.id="calculator";
 
 		newEl.setAttribute('style',`width:${calcDim.width.value}px;height:${calcDim.height.value}px`);
 
 		el.replaceWith(newEl);
 
-		let formEl = document.getElementById('calculator_options');
 		calculator.destroy();
 		calculator = Desmos.GraphingCalculator(newEl,options);
 	    
-// 		delete options.expressions
-// 		Object.assign(state,options);
-		calculator.setState(state);
+		calculator.setExpressions(state.expressions.list);
+      try{
+        let viewport = state.graph.viewport;
+        calculator.setMathBounds(
+          {'left':viewport.xmin,
+           'right':viewport.xmax,
+          'bottom':viewport.ymin,
+           'top':viewport.ymax,})
+      }catch(e){}
 		
-		calculator.observeEvent('change',function(){
+        calculator.observeEvent('change',function(){
+          
 			throttledSave();
 		});
     }
@@ -123,24 +134,18 @@
     }
     
     function persistState(){
+      let options = getCalculatorOptions()[0];
       let	el = document.getElementById('calculator');
       let state = calculator.getState();
 	  let formEl = document.getElementById('calculator_options');
       localStorage.setItem('calculator',JSON.stringify(state));
       
-      let formData =new FormData(formEl)
       let bounds = calculator.graphpaperBounds.mathCoordinates;
       let mathbounds = {left:bounds.left,right:bounds.right,top:bounds.top,bottom:bounds.bottom};
-      let options ={};
-	  Object.assign(options,DesmosOptions);
-      for (key in DesmosOptions) {
-        options[key]=formEl[key].checked;
-      }
-
+      
       let style = `width:${el.clientWidth}px;height:${el.clientHeight}px`
       result.innerHTML = String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`
-	document.getElementById('text_result').innerHTML=String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`
-      //console.log(String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`);
+	  document.getElementById('text_result').innerHTML=String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`;
     }
     
 	let throttledSave;
@@ -171,8 +176,7 @@
         throttledSave();
       });
       formEl.addEventListener('change',function(){
-		let a =getCalculatorOptions();
-        rebuildCalculator(a[0]);
+		rebuildCalculator();
         throttledSave();
       });
       calcDim.addEventListener('change',rebuildCalculator);
