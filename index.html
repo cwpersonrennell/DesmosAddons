@@ -89,6 +89,7 @@
 		calculator = Desmos.GraphingCalculator(newEl,options);
 		Object.assign(state,options);
 		console.log(state);
+		console.log(calculator);
 		calculator.setState(state);
 		calculator.observeEvent('change',function(){
 			throttledSave();
