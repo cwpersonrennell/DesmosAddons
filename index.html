@@ -87,6 +87,7 @@
 		let state = JSON.parse(localStorage.getItem('calculator'));
 		console.log(JSON.stringify(state));
 		calculator = Desmos.GraphingCalculator(newEl,options);
+	    	del options.expressions
 		Object.assign(state,options);
 		console.log(JSON.stringify(state));
 		
