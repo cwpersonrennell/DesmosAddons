@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Copy Text</title>
+    <title>Desmos Application Builder</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="Blank HTML file for you to create something.">
+    <meta name="description" content="Build a Desmos presentation to inject into your own site.">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script defer="" src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
@@ -17,6 +17,13 @@
     </style>
   </head>
   <body>
+	  <h1>Desmos App Builder</h1>
+	  <p>Use the Desmos app below to build your perfect graph then copy the html from the textarea and paste into your own site!</p>
+	  <p>You will need to include the following in your site header to render the Desmos correctly:</p>
+	  <div>
+&lt;script defer="" src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"&gt;&lt;/script&gt;
+&lt;script defer src="https://cwpersonrennell.github.io/DesmosAddons/DesmosAddons.js"&gt;&lt;/script&gt;
+	  </div>
 <div id="calculator" style="width:800px;height:600px">
       
     </div>
