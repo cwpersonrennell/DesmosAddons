@@ -85,8 +85,10 @@
 		}
 
 		let state = JSON.parse(localStorage.getItem('calculator'));
+		console.log(options);
 		calculator = Desmos.GraphingCalculator(newEl,options);
 		Object.assign(state,options);
+		console.log(state);
 		calculator.setState(state);
 		calculator.observeEvent('change',function(){
 			throttledSave();
