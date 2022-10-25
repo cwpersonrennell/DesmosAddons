@@ -47,6 +47,7 @@
       'xAxisNumbers':true,
       'trace':true,
       'pointsOfInterest':true,
+	 
       'settingsMenu':true,
       'zoomButtons':true,
       'expressionsCollapsed':false,
@@ -58,29 +59,38 @@
       'invertedColors':false,
     }
     let calculator;
+
+    function save(calculator,name){
+        localStorage.setItem(`calculator.${name}`,JSON.stringify(calculator.getState()));
+    }
+	function load(calculator,name){
+		calculator.setState(JSON.parse(localStorage.getItem(`calculator.${name}`)));
+	}
+	  
     function rebuildCalculator(){
-      let	el = document.getElementById('calculator');
-      let calcDim= document.getElementById('calculator_dimensions');
-      let newEl = document.createElement('div');
-      newEl.id="calculator";
-     
-      newEl.setAttribute('style',`width:${calcDim.width.value}px;height:${calcDim.height.value}px`);
-     
-      el.replaceWith(newEl);
-      
-      let formEl = document.getElementById('calculator_options');
-      let options ={};
-	  Object.assign(options,DesmosOptions);
-      for (key in DesmosOptions) {
-        options[key]=formEl[key].checked;
-      }
-      
-      let state = JSON.parse(localStorage.getItem('calculator'));
-      calculator = Desmos.GraphingCalculator(newEl,options);
-      calculator.setState(state);
-      calculator.observeEvent('change',function(){
-        throttledSave();
-      });
+		let el = document.getElementById('calculator');
+		let calcDim= document.getElementById('calculator_dimensions');
+		let newEl = document.createElement('div');
+		newEl.id="calculator";
+
+		newEl.setAttribute('style',`width:${calcDim.width.value}px;height:${calcDim.height.value}px`);
+
+		el.replaceWith(newEl);
+
+		let formEl = document.getElementById('calculator_options');
+		let options ={};
+		Object.assign(options,DesmosOptions);
+		for (key in DesmosOptions) {
+			options[key]=formEl[key].checked;
+		}
+
+		let state = JSON.parse(localStorage.getItem('calculator'));
+		calculator = Desmos.GraphingCalculator(newEl,options);
+		Object.assign(state,options);
+		calculator.setState(state);
+		calculator.observeEvent('change',function(){
+			throttledSave();
+		});
     }
     function insertCheckbox(formEl,key,value){
       let label = document.createElement('label');
