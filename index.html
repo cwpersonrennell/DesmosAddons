@@ -97,7 +97,7 @@
 		el.replaceWith(newEl);
 
 		let formEl = document.getElementById('calculator_options');
-		
+		calculator.destroy();
 		calculator = Desmos.GraphingCalculator(newEl,options);
 	    
 // 		delete options.expressions
