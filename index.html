@@ -40,11 +40,13 @@
   <script>
  let DesmosOptions ={
       'expressions':true,
+	  'keypad':true,
+	  'graphpaper':true,
       'showGrid':true,
       'showXAxis':true,
       'showYAxis':true,
       'xAxisNumbers':true,
-      'xAxisNumbers':true,
+      'yAxisNumbers':true,
       'trace':true,
       'pointsOfInterest':true,
 	 
@@ -58,6 +60,7 @@
       //'fontSize':16,
       'invertedColors':false,
     }
+ 	let NewDesmosOnly = ["keypad","graphpaper","expressions","settingsMenu","zoomButtons", "pointsOfInterest", "lockViewport", "projectorMode", "fontSize", "expressionsCollapsed", "invertedColors"];
     let calculator;
 
     function save(calculator,name){
@@ -67,10 +70,26 @@
 		calculator.setState(JSON.parse(localStorage.getItem(`calculator.${name}`)));
 	}
 	  
-    function rebuildCalculator(){
+	function getCalculatorOptions(){
+		let options = {};
+		let formEl = document.getElementById('calculator_options');
+		for(key in DesmosOptions){
+			options[key] = formEl[key].checked;
+		}
+		let state = {};
+		Object.assign(state,options);
+		for(key of NewDesmosOnly){
+			delete state[key];
+		}
+		calculator.setState(state);
+		return [options,state];
+	}
+	  
+    function rebuildCalculator(options){
 		let el = document.getElementById('calculator');
 		let calcDim= document.getElementById('calculator_dimensions');
 		let newEl = document.createElement('div');
+		let state = calculator.getState();
 		newEl.id="calculator";
 
 		newEl.setAttribute('style',`width:${calcDim.width.value}px;height:${calcDim.height.value}px`);
@@ -78,20 +97,13 @@
 		el.replaceWith(newEl);
 
 		let formEl = document.getElementById('calculator_options');
-		let options ={};
-		Object.assign(options,DesmosOptions);
-		for (key in DesmosOptions) {
-			options[key]=formEl[key].checked;
-		}
-
-		let state = JSON.parse(localStorage.getItem('calculator'));
-		console.log(JSON.stringify(state));
-		calculator = Desmos.GraphingCalculator(newEl,options);
-	    	delete options.expressions
-		Object.assign(state,options);
-		console.log(JSON.stringify(state));
 		
+		calculator = Desmos.GraphingCalculator(newEl,options);
+	    
+// 		delete options.expressions
+// 		Object.assign(state,options);
 		calculator.setState(state);
+		
 		calculator.observeEvent('change',function(){
 			throttledSave();
 		});
@@ -159,7 +171,8 @@
         throttledSave();
       });
       formEl.addEventListener('change',function(){
-        rebuildCalculator();
+		let a =getCalculatorOptions();
+        rebuildCalculator(a[0]);
         throttledSave();
       });
       calcDim.addEventListener('change',rebuildCalculator);
