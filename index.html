@@ -32,6 +32,7 @@
       <hr>
       <input id="copy" type="button" value="Copy to Clipboard">
       <div id="feedback"></div>
+	    <textarea id="text_result"></textarea>
       <div id="result"></div>
       
     </div>
@@ -112,7 +113,8 @@
 
       let style = `width:${el.clientWidth}px;height:${el.clientHeight}px`
       result.innerHTML = String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`
-
+	document.getElementById('text_result').innerHTML=String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`
+      console.log(String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`);
     }
     
 	let throttledSave;
