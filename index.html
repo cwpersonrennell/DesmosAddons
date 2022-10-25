@@ -17,16 +17,140 @@
     </style>
   </head>
   <body>
-    <div id="app">Hello World.</div>
-    <input id="copyButton" type="button" value="Copy" >
-    <div id="result"></div>
+<div id="calculator" style="width:800px;height:600px">
+      
+    </div>
+    <div>
+      <form id="calculator_dimensions">
+        <label for="width">Calculator Width:</label><input name="width" value="800"><br>
+        <label for="height">Calculator Height:</label><input name="height" value="600">
+        
+      </form>
+      <hr>
+      <form id="calculator_options">
+      </form>
+      <hr>
+      <input id="copy" type="button" value="Copy to Clipboard">
+      <div id="feedback"></div>
+      <div id="result"></div>
+      
+    </div>
   </body>
   <script>
+ let DesmosOptions ={
+      'expressions':true,
+      'showGrid':true,
+      'showXAxis':true,
+      'showYAxis':true,
+      'xAxisNumbers':true,
+      'xAxisNumbers':true,
+      'trace':true,
+      'pointsOfInterest':true,
+      'settingsMenu':true,
+      'zoomButtons':true,
+      'expressionsCollapsed':false,
+      'capExpressionSize':false,
+      'lockViewport':false,
+      //'showResetButtonOnGraphpaper':false,
+      'projectorMode':false,
+      //'fontSize':16,
+      'invertedColors':false,
+    }
+    let calculator;
+    function rebuildCalculator(){
+      let	el = document.getElementById('calculator');
+      let calcDim= document.getElementById('calculator_dimensions');
+      let newEl = document.createElement('div');
+      newEl.id="calculator";
+     
+      newEl.setAttribute('style',`width:${calcDim.width.value}px;height:${calcDim.height.value}px`);
+     
+      el.replaceWith(newEl);
+      
+      let formEl = document.getElementById('calculator_options');
+      let options ={};
+	  Object.assign(options,DesmosOptions);
+      for (key in DesmosOptions) {
+        options[key]=formEl[key].checked;
+      }
+      
+      let state = JSON.parse(localStorage.getItem('calculator'));
+      calculator = Desmos.GraphingCalculator(newEl,options);
+      calculator.setState(state);
+      calculator.observeEvent('change',function(){
+        throttledSave();
+      });
+    }
+    function insertCheckbox(formEl,key,value){
+      let label = document.createElement('label');
+      label.innerHTML = key;
+      let box = document.createElement('input');
+      box.type = "checkbox";
+      box.checked = DesmosOptions[key];
+      
+      box.name=key;
+      box.id=key;
+      formEl.appendChild(label);
+      formEl.appendChild(box);
+      formEl.appendChild(document.createElement("br"));
+    }
     
-    let b = document.getElementById("copyButton")
-    b.addEventListener("click",function(){
-      let el = document.getElementById("result");
-      copyToClipboard(el);
+    function persistState(){
+      let	el = document.getElementById('calculator');
+      let state = calculator.getState();
+	  let formEl = document.getElementById('calculator_options');
+      localStorage.setItem('calculator',JSON.stringify(state));
+      
+      let formData =new FormData(formEl)
+      let bounds = calculator.graphpaperBounds.mathCoordinates;
+      let mathbounds = {left:bounds.left,right:bounds.right,top:bounds.top,bottom:bounds.bottom};
+      let options ={};
+	  Object.assign(options,DesmosOptions);
+      for (key in DesmosOptions) {
+        options[key]=formEl[key].checked;
+      }
+
+      let style = `width:${el.clientWidth}px;height:${el.clientHeight}px`
+      result.innerHTML = String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`
+
+    }
+    
+	let throttledSave;
+    
+    document.addEventListener("DOMContentLoaded", () => {
+		
+      let resultEl = document.getElementById('result');
+      let formEl = document.getElementById('calculator_options');
+      for(key in DesmosOptions){
+        insertCheckbox(formEl,key,DesmosOptions[key]);
+      }
+      let calcDim= document.getElementById('calculator_dimensions');
+		
+      let	el = document.getElementById('calculator');
+      calculator = Desmos.GraphingCalculator(el);
+      let b = document.getElementById("copy")
+
+      /******Functions depending on other JS files******/
+      throttledSave = throttle(
+        function()
+        {
+          persistState();
+        },1000,{leading:false}
+    	);
+
+      /******Events******/
+      calculator.observeEvent('change',function(){
+        throttledSave();
+      });
+      formEl.addEventListener('change',function(){
+        rebuildCalculator();
+        throttledSave();
+      });
+      calcDim.addEventListener('change',rebuildCalculator);
+      b.addEventListener("mouseup",function(){
+        let copyEl = document.getElementById("result");
+        copyToClipboard(copyEl);
+      });
     });
   </script>
 </html>
