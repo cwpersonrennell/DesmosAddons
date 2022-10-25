@@ -85,11 +85,11 @@
 		}
 
 		let state = JSON.parse(localStorage.getItem('calculator'));
-		console.log(options);
+		console.log(JSON.stringify(state));
 		calculator = Desmos.GraphingCalculator(newEl,options);
 		Object.assign(state,options);
-		console.log(state);
-		console.log(calculator);
+		console.log(JSON.stringify(state));
+		
 		calculator.setState(state);
 		calculator.observeEvent('change',function(){
 			throttledSave();
@@ -127,7 +127,7 @@
       let style = `width:${el.clientWidth}px;height:${el.clientHeight}px`
       result.innerHTML = String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`
 	document.getElementById('text_result').innerHTML=String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`
-      console.log(String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`);
+      //console.log(String.raw`&lt;calculator options='${JSON.stringify(options)}' mathbounds='${JSON.stringify(mathbounds)}' style="${style}" data-string='${JSON.stringify(state)}' &gt;&lt;/calculator &gt;`);
     }
     
 	let throttledSave;
