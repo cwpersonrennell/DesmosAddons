@@ -68,7 +68,15 @@
       </item>
     <item id="main" style="margin-left:3px">
       <strong>Desmos Embedded Graph Builder</strong>
-
+	    <p>In order for the embedded graph to function, you will need to add these to the header of your site:</p>
+       <div style="background:black; color:white;border:solid 1px yellow;">
+	       &lt;script defer="" src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"&gt;
+	       &lt;/script&gt;
+		&lt;script defer src="https://cwpersonrennell.github.io/DesmosAddons/DesmosAddons.js"&gt;
+	       &lt;/script&gt;
+		&lt;script defer="defer"> document.addEventListener("DOMContentLoaded", () => {getCalculators();}); 
+	       &lt;/script&gt;
+	    </div>
       <div id="calculator" style="width:800px;height:600px">
 
       </div>
