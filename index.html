@@ -9,42 +9,93 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script defer="" src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
-    <script defer src="./copyToClipboard.js"></script>
-    <script defer src="./DesmosAddons.js"></script>
-    <script defer src="./throttle.js"></script>
+    <script defer src="https://cwpersonrennell.github.io/DesmosAddons/copyToClipboard.js"></script>
+    <script defer src="https://cwpersonrennell.github.io/DesmosAddons/DesmosAddons.js"></script>
+    <script defer src="https://cwpersonrennell.github.io/DesmosAddons/throttle.js"></script>
     <style>
-      body { max-width: 1000px; width: 100%; margin: 1em auto; font-size: 2em; }
+            html{height:100%}
+      body {width: 100%;height:100%; font-size: 2em;margin:0px;padding:0px; }
+      #grid{
+        display:flex;
+        flex-direction:column;
+        height:100%
+      }
+      #container{
+        display:flex;
+        width:100%;
+        flex:200px;
+        flex-grow:1;
+      }
+      item{
+        flex:1;
+        max-width:800px;
+        flex-grow:1;
+        background:#36454F;
+        color:yellow;
+      }
+      item:nth-of-type(2){
+        background:white;
+        color:black;
+        flex:3;
+      }
+      
+      .pointer{
+        cursor:pointer;
+        margin:1px;
+        
+      }
+      .pointer:hover{
+      border:solid 1px yellow;
+        padding-left:2px;
+        background:black;
+      }
+      
+      #load_container{
+        overflow-y:scroll;
+        height:90%;
+        border-right:solid 1px black;
+      }
+      
     </style>
   </head>
   <body>
-	  <h1>Desmos App Builder</h1>
-	  <p>Use the Desmos app below to build your perfect graph then copy the html from the textarea and paste into your own site!</p>
-	  <p>You will need to include the following in your site header to render the Desmos correctly:</p>
-	  <div style="border:solid yellow 2px; background:black; color:white;">
-&lt;script defer="" src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"&gt;&lt;/script&gt;<br>
-&lt;script defer src="https://cwpersonrennell.github.io/DesmosAddons/DesmosAddons.js"&gt;&lt;/script&gt;<br>
-&lt;script defer="defer"&gt;
-     document.addEventListener("DOMContentLoaded", () => {getCalculators();});
-&lt;/script&gt;
-	  </div>
-<div id="calculator" style="width:800px;height:600px">
-      
-    </div>
-    <div>
-      <form id="calculator_dimensions">
-        <label for="width">Calculator Width:</label><input name="width" value="800"><br>
-        <label for="height">Calculator Height:</label><input name="height" value="600">
+    <div id="grid">
+    <div id="container">
+    <item class="sidebar">
+      <div style="border-bottom:solid 4px red">Saved Graphs</div>
+      <div id="load_container">
+      </div>
+      </item>
+    <item id="main" style="margin-left:3px">
+      <strong>Desmos Embedded Graph Builder</strong>
+
+      <div id="calculator" style="width:800px;height:600px">
+
+      </div>
+      <div>
+        <form id="name">
+          <label for="name">Save Graph:</label><input name="name" hint="name">
+          <input type="button" id="save_graph" value="Save">
+        </form>
         
-      </form>
-      <hr>
-      <form id="calculator_options">
-      </form>
-      <hr>
-      <input id="copy" type="button" value="Copy to Clipboard" style="display:none">
-      <div id="feedback"></div>
-	    <textarea id="text_result" style="min-width:800px;min-height:100px"></textarea>
-      <div id="result" style="display:none"></div>
-      
+        <form id="calculator_dimensions">
+          <label for="width">Calculator Width:</label><input name="width" value="800"><br>
+          <label for="height">Calculator Height:</label><input name="height" value="600">
+
+        </form>
+        <hr>
+        <form id="calculator_options">
+        </form>
+        <hr>
+        <input id="copy" type="button" value="Copy to Clipboard" style="display:none">
+        <div id="feedback"></div>
+          <textarea id="text_result" style="min-width:800px;min-height:100px"></textarea>
+        <div id="result" style="display:none"></div>
+
+      </div>
+     </item>
+      <item></item>
+    </div>
     </div>
   </body>
   <script>
@@ -72,12 +123,87 @@
     }
  	let NewDesmosOnly = ["keypad","graphpaper","expressions","settingsMenu","zoomButtons", "pointsOfInterest", "lockViewport", "projectorMode", "fontSize", "expressionsCollapsed", "invertedColors"];
     let calculator;
+	
+    function updateLoadUI(){
+      let loadUI = document.getElementById('load_container');
+      while(loadUI.hasChildNodes()){
+        loadUI.removeChild(loadUI.firstChild);
+      }
+      let ls = localStorage.getItem('saved_calculators')
+      if(ls == null)return;
+      let saveNames =Object.values(JSON.parse( ls ));
 
-    function save(calculator,name){
-        localStorage.setItem(`calculator.${name}`,JSON.stringify(calculator.getState()));
+      for(let name of saveNames){
+        let el = document.createElement('div');
+        el.innerHTML = name;
+        el.id=name;
+        el.name=name;
+        el.classList.add("pointer");
+        el.addEventListener('click',function(e){
+          let n = e.target.id;
+          load(n);
+        });
+        loadUI.appendChild(el);
+      }
+      
     }
-	function load(calculator,name){
-		calculator.setState(JSON.parse(localStorage.getItem(`calculator.${name}`)));
+    function save(){
+      let calcDim= document.getElementById('calculator_dimensions');
+      let calcName = document.getElementById('name');
+      let name = calcName.name.value;
+      let save = {};
+      save.name = name;
+      save.expressions = calculator.getState().expressions.list;
+      save.options = getCalculatorOptions()[0];
+      save.width = calcDim.width.value;
+      save.height = calcDim.height.value;
+      
+      localStorage.setItem(`calculator.${name}`,JSON.stringify(save));
+
+	  let calculators = localStorage.getItem("saved_calculators");
+      if(calculators == null)
+        localStorage.setItem("saved_calculators",JSON.stringify({"`${name}`":name}));
+      else{
+        calculators = JSON.parse(calculators);
+        calculators[name]=name;
+        localStorage.setItem("saved_calculators",JSON.stringify(calculators));
+      }
+      updateLoadUI();
+    }
+	function load(name){
+        let el = document.getElementById('calculator');
+        let formEl = document.getElementById('calculator_options');
+        let calcDim= document.getElementById('calculator_dimensions');
+        let save_graph = document.getElementById('save_graph');
+        let saveForm = document.getElementById('name');
+      saveForm.name.value=name;
+
+        let load = JSON.parse(localStorage.getItem(`calculator.${name}`));
+        let expressions = load.expressions;//JSON.parse(localStorage.getItem(`calculator.${name}.expressions`));
+        let options = load.options;//JSON.parse(localStorage.getItem(`calculator.${name}.options`));
+        let width = load.width;//localStorage.getItem(`calculator.${name}.width`);
+        let height = load.height;//localStorage.getItem(`calculator.${name}.width`);
+
+      //Update UI
+        for(key in options){
+          formEl[key].checked = options[key];
+        }
+        calcDim.width.value = width;
+        calcDim.height.value = height;
+		
+       //Create new calculator element
+        let newEl = document.createElement('div');
+        newEl.id="calculator";
+        newEl.setAttribute('style',`width:${calcDim.width.value}px;height:${calcDim.height.value}px`);
+		//Remove old element
+		el.replaceWith(newEl);
+		//Remove old eventlisteners etc.
+		calculator.destroy();
+        //Restart the Calculator with Saved values
+		calculator = Desmos.GraphingCalculator(newEl,options);
+	    
+		calculator.setExpressions(expressions);
+        persistState();
 	}
 	  
 	function getCalculatorOptions(){
@@ -161,7 +287,18 @@
 	let throttledSave;
     
     document.addEventListener("DOMContentLoaded", () => {
-		
+      updateLoadUI();
+      let saveForm = document.getElementById("name");
+      saveForm.addEventListener('submit',function(e){
+        e.preventDefault();
+        save();
+      });
+	  let container=document.getElementById("container");
+      container.height = document.body.height;
+      let sidebars = document.getElementsByClassName("sidebar");
+      for(let elt of sidebars){
+      	elt.height=document.body.height;
+      };
       let resultEl = document.getElementById('result');
       let formEl = document.getElementById('calculator_options');
       for(key in DesmosOptions){
@@ -193,6 +330,9 @@
       b.addEventListener("mouseup",function(){
         let copyEl = document.getElementById("result");
         copyToClipboard(copyEl);
+      });
+      document.getElementById("save_graph").addEventListener("mouseup",function(){
+        save();
       });
     });
   </script>
