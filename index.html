@@ -67,7 +67,7 @@
       </div>
       </item>
     <item id="main" style="margin-left:3px">
-      <strong>Desmos Embedded Graph Builder</strong>
+          <strong>Desmos Embedded Graph Builder</strong>
 	    <p>In order for the embedded graph to function, you will need to add these to the header of your site:</p>
        <div style="background:black; color:white;border:solid 1px yellow;">
 	       &lt;script defer="" src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"&gt;
@@ -159,13 +159,17 @@
       let calcDim= document.getElementById('calculator_dimensions');
       let calcName = document.getElementById('name');
       let name = calcName.name.value;
+      let state = calculator.getState();
+      let viewport = state.graph.viewport;
+      let mathbounds ={'left':viewport.xmin,'right':viewport.xmax,
+                      'bottom':viewport.ymin,'top':viewport.ymax,};
       let save = {};
       save.name = name;
-      save.expressions = calculator.getState().expressions.list;
+      save.expressions = state.expressions.list;
       save.options = getCalculatorOptions()[0];
       save.width = calcDim.width.value;
       save.height = calcDim.height.value;
-      
+      save.mathbounds = mathbounds;
       localStorage.setItem(`calculator.${name}`,JSON.stringify(save));
 
 	  let calculators = localStorage.getItem("saved_calculators");
@@ -191,7 +195,7 @@
         let options = load.options;//JSON.parse(localStorage.getItem(`calculator.${name}.options`));
         let width = load.width;//localStorage.getItem(`calculator.${name}.width`);
         let height = load.height;//localStorage.getItem(`calculator.${name}.width`);
-
+        let mathbounds = load.mathbounds;
       //Update UI
         for(key in options){
           formEl[key].checked = options[key];
@@ -209,7 +213,7 @@
 		calculator.destroy();
         //Restart the Calculator with Saved values
 		calculator = Desmos.GraphingCalculator(newEl,options);
-	    
+	    calculator.setMathBounds(mathbounds);
 		calculator.setExpressions(expressions);
         persistState();
 	}
