@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><head>
+        <link rel="stylesheet" href="https://cwpersonrennell.github.io/Math/time.css">
+    <script defer="" src="https://cwpersonrennell.github.io/Math/time.js">
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script defer="" src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+  <link rel="stylesheet" href="https://cwpersonrennell.github.io/DesmosAddons/styles.css">
+  
+  <script defer="" src="https://cwpersonrennell.github.io/DesmosAddons/DesmosAddons.js"></script>
+    </script>
+</head>
+<body class="fa">
+  <p><strong>Formulas:</strong>
+    <ul>
+      <li>\(s=\theta r\)</li>
+      <li>\(A = \frac{1}{2}\theta r^2</li>
+  </ul>
+<div id="time" style="position: absolute; top: 0px; left: 0px;"></div>
+  
+<p>
+<script>
+    let time = document.getElementById("time");
+
+    time.style.width = window.outerWidth+"px";
+    time.style.height=window.outerHeight+"px";
+    time.style.paddingTop = window.outerHeight/2+"px";
+    time.style.zIndex=1000000;
+  </script>
+</p>
+</body></html>
