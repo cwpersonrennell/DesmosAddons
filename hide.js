@@ -18,4 +18,4 @@ try{
       show_solution = !show_solution;
     }catch(){}//pass
   });
-}catch(){//pass}
+}catch(){}//pass
