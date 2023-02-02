@@ -16,6 +16,6 @@ try{
         el.classList.remove('hide');
       }
       show_solution = !show_solution;
-    }catch(){}//pass
+    }catch{}//pass
   });
-}catch(){}//pass
+}catch{}//pass
