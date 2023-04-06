@@ -4,7 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const usercontent = document.querySelector("#WAMathJax").content.cloneNode(true);
         iframe.frameBorder=0;
         iframe.width=800;
-        iframe.onload=function(){try{console.log("iFrame load calculators");getCalculators();}catch(err){console.log(err);console.log(this);console.log(document);}};
+        iframe.onload=function(){
+                try{
+                        console.log("iFrame load calculators");
+                        this.contentWindow.getCalculators();
+                }catch(err){
+                        console.log(err);
+                        console.log(this);
+                        console.log(document);
+                }};
         let target = document.getElementById("target");
         target.append(iframe);
         
