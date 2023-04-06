@@ -4,16 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const usercontent = document.querySelector("#WAMathJax").content.cloneNode(true);
         iframe.frameBorder=0;
         iframe.width=800;
-        iframe.addEventListener('load',function(){
-                try{
-                        console.log("iFrame load calculators");
-                        //console.log(JSON.stringify(this.contentWindow));
-                        this.contentWindow.getCalculators();
-                }catch(err){
-                        console.log(err);
-                        console.log(this);
-                        console.log(document);
-                }};);
+        iframe.addEventListener('load',
+                ()=>{
+                        try{
+                                console.log("iFrame load calculators");
+                                this.contentWindow.getCalculators();
+                        }catch(err){
+                                console.log(err);
+                                console.log(this);
+                                console.log(document);
+                        }
+                });
         let target = document.getElementById("target");
         target.append(iframe);
         
