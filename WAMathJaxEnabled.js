@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
                 "https://cwpersonrennell.github.io/DesmosAddons/DesmosAddons.js",
                 "https://cwpersonrennell.github.io/DesmosAddons/hide.js",
+                "https://cwpersonrennell.github.io/DesmosAddons/getcalculators.js",
                 ];
         
         for(let i = 0; i<scripts.length;i++){
