@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
         iframe.addEventListener('load',function(){
                 try{
                         console.log("iFrame load calculators");
-                        console.log(JSON.stringify(this.contentWindow));
+                        //console.log(JSON.stringify(this.contentWindow));
                         this.contentWindow.getCalculators();
                 }catch(err){
                         console.log(err);
