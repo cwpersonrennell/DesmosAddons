@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const usercontent = document.querySelector("#WAMathJax").content.cloneNode(true);
         iframe.frameBorder=0;
         iframe.width=800;
-
+        iframe.onload=function(){try{getCalculators();}catch(err){console.log(err)}};
         let target = document.getElementById("target");
         target.append(iframe);
         
