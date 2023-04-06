@@ -1,18 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
         const iframe = document.createElement('iframe');
+iframe.style="min-width:1000px;min-height:800px;";
         iframe.src="about:blank";
         const usercontent = document.querySelector("#WAMathJax").content.cloneNode(true);
         iframe.frameBorder=0;
         iframe.width=800;
         function bootstrap(){
+console.log("bootstrap");
                 try{
                         console.log("iFrame load calculators");
-                        this.contentWindow.getCalculators();
+                         iframe.contentWindow.Desmos.GraphingCalculator();
+                        iframe.contentWindow.getCalculators();
                 }catch(err){
                         console.log(err);
-                        console.log(this);
-                        console.log(document);
-                        setTimeout(1000,bootstrap);
+                        console.log(iframe.contentWindow);
+                        setTimeout(bootstrap,1000);
                 }
         }
         
@@ -23,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const doc = iframe.contentDocument;
         const body = doc.createElement('body');
         let scripts = [
+"https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6",
                 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
                 "https://cwpersonrennell.github.io/DesmosAddons/DesmosAddons.js",
                 "https://cwpersonrennell.github.io/DesmosAddons/hide.js"
