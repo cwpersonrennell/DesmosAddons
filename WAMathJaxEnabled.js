@@ -1,21 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
         const iframe = document.createElement('iframe');
-iframe.style="min-width:1000px;min-height:800px;";
+iframe.style="min-width:800px;max-width:800px;";
         iframe.src="about:blank";
         const usercontent = document.querySelector("#WAMathJax").content.cloneNode(true);
         iframe.frameBorder=0;
         iframe.width=800;
         function bootstrap(){
-console.log("bootstrap");
+                //console.log("bootstrap");
                 try{
-                        console.log("iFrame load calculators");
-                         iframe.contentWindow.Desmos.GraphingCalculator();
+                        //console.log("iFrame load calculators");
+                        iframe.contentWindow.Desmos.GraphingCalculator();
                         iframe.contentWindow.getCalculators();
+                        //console.log(iframe.contentWindow.document.body);
+                        iframe.height = iframe.contentWindow.document.body.scrollHeight+30;
                 }catch(err){
-                        console.log(err);
-                        console.log(iframe.contentWindow);
+                        //console.log(err);
+                        //console.log(iframe.contentWindow);
                         setTimeout(bootstrap,1000);
                 }
+                
         }
         
         iframe.addEventListener('load',bootstrap);
@@ -38,5 +41,7 @@ console.log("bootstrap");
                 body.append(script);
         }
         body.append(usercontent);
+        body.style.setProperty('max-width','800px');
+        body.style.setProperty('overflow-x','clip');
         doc.body=body;      
 });
