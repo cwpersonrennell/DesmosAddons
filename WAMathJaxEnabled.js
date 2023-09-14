@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         iframe.addEventListener('load',bootstrap);
-        //let target = document.getElementById("target");
-        
-        document.body.append(iframe);
+        let target = document.getElementById("target");
+        target.append(iframe);
+        //document.body.append(iframe);
         
         const doc = iframe.contentDocument;
         const body = doc.createElement('body');
