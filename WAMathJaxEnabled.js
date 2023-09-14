@@ -2,7 +2,8 @@ var WAMathJax = WAMathJax || {};
 if(WAMathJax.run_complete){}else{
         WAMathJax.iframeFactory=function(){
                 function bootstrap(){
-                        //console.log("bootstrap");
+                        console.log("bootstrap");
+                        console.log(this)
                         try{
                                 //console.log("iFrame load calculators");
                                 this.contentWindow.Desmos.GraphingCalculator();
@@ -12,7 +13,7 @@ if(WAMathJax.run_complete){}else{
                         }catch(err){
                                 //console.log(err);
                                 //console.log(iframe.contentWindow);
-                                setTimeout(bootstrap,1000);
+                                setTimeout(bootstrap.bind(this),1000);
                         }
                         
                 }
@@ -57,7 +58,7 @@ if(WAMathJax.run_complete){}else{
         WAMathJax.run_complete=true;
         WAMathJax.DOMComplete = false;
 
-        
+
         document.addEventListener("DOMContentLoaded", () => {
                 if(WAMathJax.DOMComplete) return;
                 WAMathJax.DOMComplete = true;
