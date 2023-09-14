@@ -2,17 +2,11 @@ var WAMathJax = WAMathJax || {};
 if(WAMathJax.run_complete){}else{
         WAMathJax.iframeFactory=function(){
                 function bootstrap(){
-                        console.log("bootstrap");
-                        console.log(this)
                         try{
-                                //console.log("iFrame load calculators");
                                 this.contentWindow.Desmos.GraphingCalculator();
                                 this.contentWindow.getCalculators();
-                                //console.log(iframe.contentWindow.document.body);
                                 this.height = this.contentWindow.document.body.scrollHeight+30;
                         }catch(err){
-                                //console.log(err);
-                                //console.log(iframe.contentWindow);
                                 setTimeout(bootstrap.bind(this),1000);
                         }
                         
@@ -50,7 +44,7 @@ if(WAMathJax.run_complete){}else{
                         ];
                 WAMathJax.addScriptsToBody(scripts,body,doc);
                 body.append(usercontent);
-                body.style.setProperty('max-width','800px');
+                body.style.setProperty('max-width','805px');
                 body.style.setProperty('overflow-x','clip');
                 doc.body=body;  
         }
