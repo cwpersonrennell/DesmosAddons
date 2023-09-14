@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+        console.log("WAMathJaxEnabled.js is loaded and running");
         const iframe = document.createElement('iframe');
-iframe.style="min-width:800px;max-width:800px;";
+        iframe.style="min-width:800px;max-width:800px;";
         iframe.src="about:blank";
         const usercontent = document.querySelector("#WAMathJax").content.cloneNode(true);
         iframe.frameBorder=0;
