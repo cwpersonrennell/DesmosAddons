@@ -4,10 +4,11 @@ _WA_DEFAULT = function(){
                 for(template of templates){
                 WAMathJax.loadUserContent(template);
         }}
-WAMathJax.onDOMContentLoaded = WAMathJax.onDOMContentLoaded || _WA_DEFAULT;
-WAMathJax.afterUserContent = WAMathJax.afterUserContent || function(){};
+
 
 if(WAMathJax.run_complete){}else{
+        WAMathJax.onDOMContentLoaded = WAMathJax.onDOMContentLoaded || _WA_DEFAULT;
+        WAMathJax.afterUserContent = WAMathJax.afterUserContent || function(){};
         WAMathJax.iframeFactory=function(){
                 function bootstrap(){
                         try{
