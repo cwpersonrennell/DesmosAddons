@@ -1,11 +1,11 @@
-var WAMathJax = WAMathJax || {
-        onDOMContentLoaded:function(){
-                let templates = document.querySelectorAll("#WAMathJax");
-                        for(template of templates){
-                        WAMathJax.loadUserContent(template);
-                }},
-        afterUserContent:function(){}
-        };
+var WAMathJax = WAMathJax || {};
+_WA_DEFAULT = function(){
+        let templates = document.querySelectorAll("#WAMathJax");
+                for(template of templates){
+                WAMathJax.loadUserContent(template);
+        }}
+WAMathJax.onDOMContentLoaded = WAMathJax.onDOMContentLoaded || _WA_DEFAULT;
+WAMathJax.afterUserContent = WAMathJax.afterUserContent || function(){};
 
 if(WAMathJax.run_complete){}else{
         WAMathJax.iframeFactory=function(){
