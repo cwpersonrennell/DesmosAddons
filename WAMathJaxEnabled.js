@@ -1,4 +1,12 @@
-var WAMathJax = WAMathJax || {};
+var WAMathJax = WAMathJax || {
+        onDOMContentLoaded:function(){
+                let templates = document.querySelectorAll("#WAMathJax");
+                        for(template of templates){
+                        WAMathJax.loadUserContent(template);
+                }},
+        afterUserContent:function(){}
+        };
+
 if(WAMathJax.run_complete){}else{
         WAMathJax.iframeFactory=function(){
                 function bootstrap(){
@@ -47,7 +55,8 @@ if(WAMathJax.run_complete){}else{
                 body.append(usercontent);
                 body.style.setProperty('max-width','805px');
                 body.style.setProperty('overflow-x','clip');
-                doc.body=body;  
+                doc.body=body; 
+                WAMathJax.afterUserContent(); 
         }
 
         WAMathJax.run_complete=true;
@@ -57,11 +66,7 @@ if(WAMathJax.run_complete){}else{
         document.addEventListener("DOMContentLoaded", () => {
                 if(WAMathJax.DOMComplete) return;
                 WAMathJax.DOMComplete = true;
-
-                let templates = document.querySelectorAll("#WAMathJax");
-                for(template of templates){
-                        WAMathJax.loadUserContent(template);
-                }
+                WAMathJax.onDOMContentLoaded();
         });
 }
 
