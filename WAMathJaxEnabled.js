@@ -57,7 +57,7 @@ if(WAMathJax.run_complete){}else{
                 body.style.setProperty('max-width','805px');
                 body.style.setProperty('overflow-x','clip');
                 doc.body=body; 
-                WAMathJax.afterUserContent(); 
+                WAMathJax.afterUserContent().bind(doc); 
         }
 
         WAMathJax.run_complete=true;
