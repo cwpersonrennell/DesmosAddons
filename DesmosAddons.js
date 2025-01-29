@@ -1,9 +1,9 @@
-let red = "red";
-let blue = "blue";
-let black = "black";
-let orange = "orange";
-let purple = "purple";
-let DEFAULT_OPTIONS = {expressions:false, lockViewport:true,fontSize:24};
+var red = "red";
+var blue = "blue";
+var black = "black";
+var orange = "orange";
+var purple = "purple";
+var DEFAULT_OPTIONS = {expressions:false, lockViewport:true,fontSize:24};
   
 function getCalculators(){
     
